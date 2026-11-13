@@ -14,9 +14,31 @@ The browser workspace supports batches of up to 50 documents, previews, review f
 - Configurable cleanup of originals, extracted text, outputs and reports; 24 hours after each job finishes by default.
 - REST API and CLI with the same ownership and processing rules.
 
+## Screenshots
+
+Screenshots use synthetic test documents.
+
+### Build a batch
+
+Select documents and follow each file through processing.
+
+![Veil workspace with three documents ready for batch processing](docs/screenshots/batch-workspace.png)
+
+### Inspect results
+
+Review per-file outcomes, processing details, sanitised previews and downloads.
+
+![Completed batch with document downloads and a sanitised PDF preview](docs/screenshots/completed-results.png)
+
+### Correct missed PII
+
+Select missed text, add a phrase and regenerate the result, or re-run detection.
+
+![Selecting missed text and preparing a manual redaction](docs/screenshots/manual-redaction.png)
+
 ## Quick start
 
-Requirements: Docker Engine with Compose, Python 3 for certificate setup, and OpenSSL. The Python application itself is tested on Python 3.11. No GPU is required.
+Requirements: Docker Engine with Compose, Python 3 for certificate setup, and OpenSSL. The Python application itself is tested on Python 3.11. **GPU acceleration is recommended when self-hosting models with 9 billion parameters (9B) or more.** Veil runs document editing and OCR on the CPU; model inference can run on a separate GPU-equipped server or a hosted provider. Choose GPU memory for the model size, quantization, context length and concurrency you plan to use.
 
 ```bash
 cp .env.example .env
@@ -97,7 +119,7 @@ VEIL_CA_BUNDLE=.veil/tls/ca.crt .venv/bin/python scripts/test_live_llm.py \
 
 Live tests create real jobs. Optional browser checks require Playwright installed under `.browser` and Chrome; set `VEIL_CHROME_EXECUTABLE` and `VEIL_TEST_URL` for your environment. Their certificate-validation bypass is for automated private-CA testing only. No real credentials are required by CI.
 
-The source export is an explicit allowlist. Runtime data, `.env` variants, keys/certificates, cookie jars, documents, screenshots, logs, historical evidence, generated builds and local agent/cloud state are excluded. Enable the supplied pre-commit guard with `git config core.hooksPath .githooks`. Release checks inspect actual Git index blobs as well as all tracked paths; ignore rules do not remove files already committed. See [RELEASING.md](RELEASING.md).
+The source export is an explicit allowlist. Runtime data, `.env` variants, keys/certificates, cookie jars, documents, unreviewed screenshots, logs, historical evidence, generated builds and local agent/cloud state are excluded. Enable the supplied pre-commit guard with `git config core.hooksPath .githooks`. Release checks inspect actual Git index blobs as well as all tracked paths; ignore rules do not remove files already committed. See [RELEASING.md](RELEASING.md).
 
 ## License
 

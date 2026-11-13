@@ -45,3 +45,7 @@ include app/README.md
 global-exclude __pycache__ *.py[cod]
 
 include .githooks/pre-commit
+
+include docs/screenshots/batch-workspace.png
+include docs/screenshots/completed-results.png
+include docs/screenshots/manual-redaction.png

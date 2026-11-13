@@ -27,6 +27,7 @@ def allowed(path):
                 or str(p)=='veil/models/ch_PP-OCRv5_rec_mobile.onnx'
                 or (len(parts)==3 and parts[1]=='static' and p.suffix in {'.html','.css','.js','.md','.ico'})
                 or (len(parts)==4 and parts[1:3]==('static','assets') and p.name in BRAND))
+    if str(p) in {'docs/screenshots/batch-workspace.png','docs/screenshots/completed-results.png','docs/screenshots/manual-redaction.png'}:return True
     if parts[0]=='tests':return len(parts)==2 and p.suffix=='.py'
     if parts[0]=='scripts':return len(parts)==2 and p.name in SCRIPTS
     if parts[0]=='licenses':return len(parts)==2 and p.suffix in {'.txt','.md'}
@@ -40,7 +41,7 @@ def files(root):
         path=root/name
         if path.is_file():yield path
     # Only approved source subtrees are visited, never local .env/data/logs.
-    for name in ['veil','tests','scripts','licenses','.github','.githooks','app']:
+    for name in ['veil','tests','scripts','licenses','.github','.githooks','app','docs']:
         folder=root/name
         if not folder.is_dir():continue
         for path in sorted(folder.rglob('*')):
