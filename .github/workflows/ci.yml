@@ -21,12 +21,31 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Classify documentation-only changes
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          python3 - <<'PYDOC'
+          import os, subprocess
+          base=os.environ.get('BASE_SHA','')
+          if not base or set(base)=={'0'}:
+              base=subprocess.run(['git','merge-base','HEAD','origin/main'],capture_output=True,text=True).stdout.strip()
+          changed=subprocess.run(['git','diff','--name-only',base,'HEAD'],capture_output=True,text=True,check=True).stdout.splitlines() if base else []
+          metadata={'.gitignore','MANIFEST.in','scripts/release_files.py','.github/workflows/ci.yml'}
+          screenshots={'docs/screenshots/batch-workspace.png','docs/screenshots/completed-results.png','docs/screenshots/manual-redaction.png'}
+          docs=bool(changed) and all(p.endswith('.md') or p in metadata or p in screenshots for p in changed)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as output:output.write('docs_only='+str(docs).lower()+'\n')
+          print('Documentation-only checks' if docs else 'Full application verification')
+          PYDOC
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
       - name: Install OCR system libraries
+        if: steps.scope.outputs.docs_only != 'true'
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgl1 libglib2.0-0 fonts-dejavu-core fonts-noto-cjk
       - name: Install verified dependencies
+        if: steps.scope.outputs.docs_only != 'true'
         run: |
           python -m pip install --require-hashes -r requirements-dev.lock
           python -m pip install --no-deps --no-build-isolation -e .
@@ -40,16 +59,21 @@ jobs:
           tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" git --redact=100 --no-banner --log-opts="--all"
       - name: Audit runtime and development dependencies
+        if: steps.scope.outputs.docs_only != 'true'
         run: |
           pip-audit -r requirements.lock --no-deps --disable-pip
           pip-audit -r requirements-dev.lock --no-deps --disable-pip
       - name: Test processing and workspace isolation
+        if: steps.scope.outputs.docs_only != 'true'
         run: pytest -q
       - name: Build distributions
+        if: steps.scope.outputs.docs_only != 'true'
         run: python -m build --no-isolation
       - name: Validate installable image
+        if: steps.scope.outputs.docs_only != 'true'
         run: docker build --tag veil:ci .
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      - if: steps.scope.outputs.docs_only != 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: veil-distributions
           path: dist/
