@@ -1,0 +1,3 @@
+#!/bin/sh
+# Inspect actual index blobs, not only the visible working files.
+exec python3 scripts/release_check.py --tracked --secret-env .env

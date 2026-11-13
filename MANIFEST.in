@@ -1,0 +1,47 @@
+# Explicit source/build inputs. Runtime data is never grafted.
+include .dockerignore
+include .env.example
+include .gitattributes
+include .gitignore
+include CHANGELOG.md
+include DEVELOPER_GUIDE.md
+include Dockerfile
+include LICENSE
+include MANIFEST.in
+include PRESERVATION.md
+include README.md
+include RELEASING.md
+include REVIEW_CRITERIA.md
+include SECURITY.md
+include THIRD_PARTY.md
+include compose.pilot.yaml
+include compose.secrets.yaml
+include compose.yaml
+include pyproject.toml
+include requirements-build.in
+include requirements-build.lock
+include requirements-dev.in
+include requirements-dev.lock
+include requirements.in
+include requirements.lock
+include scripts/deploy.sh
+include scripts/dev.sh
+include scripts/prepare_release.py
+include scripts/release_check.py
+include scripts/release_files.py
+include scripts/setup.sh
+include scripts/setup_workspace_tls.py
+include scripts/test_live_llm.py
+include scripts/ui-llm.cjs
+include scripts/ui-provider-recovery.cjs
+include scripts/ui-revisions.cjs
+include scripts/ui-theme.cjs
+include scripts/ui-workspaces.cjs
+recursive-include veil *.py *.onnx *.json *.html *.css *.js *.md *.ico *.png
+recursive-include tests *.py
+recursive-include licenses *.txt *.md
+recursive-include .github *.yml *.yaml
+include app/README.md
+global-exclude __pycache__ *.py[cod]
+
+include .githooks/pre-commit

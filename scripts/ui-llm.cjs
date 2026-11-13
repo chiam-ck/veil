@@ -1,0 +1,56 @@
+// Browser verification of the deployed LLM-only workspace and guide.
+const {chromium} = require('../.browser/node_modules/playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+(async () => {
+  const browser = await chromium.launch({executablePath: (process.env.VEIL_CHROME_EXECUTABLE||'/usr/bin/google-chrome'), headless: true, args: ['--no-sandbox']});
+  try {
+    const page = await browser.newPage({ignoreHTTPSErrors:true,viewport: {width: 1280, height: 1100}});
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    const base = process.env.VEIL_TEST_URL || 'https://127.0.0.1:8787';
+    const folder = 'evidence/llm-only';
+    fs.mkdirSync(folder, {recursive: true});
+    await page.goto(base);
+    await page.waitForFunction(() => document.getElementById('detector-mode').textContent.startsWith('Model · '));
+    assert.equal(await page.locator('input[type=password]').count(), 0);
+    assert.equal(await page.locator('a[href^="/lab"]').count(), 0);
+    assert.equal(await page.getByRole('button', {name: /Presidio|Compare with/}).count(), 0);
+    assert.equal(await page.locator('.pill').textContent(), 'SERVER MANAGED');
+    const config = await (await page.request.get(base+'/api/config')).json();
+    await page.waitForFunction(() => !document.getElementById('retention-period').textContent.startsWith('Loading'));
+    assert.ok((await page.locator('#retention-period').textContent()).includes(config.retention_hours+' hours after each job finishes'));
+    assert.equal(await page.locator('.retention-notice').count(), 0);
+    assert.equal(await page.locator('#upload #retention-period').count(), 1);
+    assert.equal(await page.locator('.model-info').getAttribute('open'), null);
+    assert.equal(await page.locator('main > aside').count(), 0);
+    assert.ok((await page.locator('footer').textContent()).includes('Detection can miss personal data'));
+    assert.ok((await page.locator('#retention-period').textContent()).includes('including blocked or failed jobs'));
+    const buttons = await page.locator('#upload .form-actions').boundingBox();
+    const retention = await page.locator('#retention-period').boundingBox();
+    assert.ok(retention.y >= buttons.y+buttons.height);
+    await page.locator('#detector-mode').click();
+    assert.equal(await page.locator('#detector-description').isVisible(), true);
+    await page.locator('#detector-mode').click();
+    assert.equal(await page.locator('#detector-description').isVisible(), false);
+    await page.screenshot({path: folder+'/workspace-desktop.png', fullPage: true});
+    await page.setViewportSize({width: 390, height: 844});
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.screenshot({path: folder+'/workspace-mobile.png', fullPage: true});
+    await page.getByRole('link', {name: 'Developer guide', exact: true}).click();
+    assert.equal(await page.locator('.pill').textContent(), 'ON-PREM');
+    assert.ok(!(await page.locator('body').textContent()).includes('hybrid'));
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.screenshot({path: folder+'/developer-guide-mobile.png', fullPage: true});
+    const schema = await (await page.request.get(base+'/openapi.json')).json();
+    assert.ok(!schema.paths['/api/llm/compare']);
+    assert.equal((await page.request.get(base+'/lab/')).status(), 404);
+    await page.route('**/api/config', async route => { const response = await route.fetch(); const data = await response.json(); data.retention_hours = 48; await route.fulfill({response, json: data}); });
+    await page.goto(base);
+    await page.waitForFunction(() => document.getElementById('retention-period').textContent.includes('48 hours after each job finishes'));
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    assert.deepEqual(errors, []);
+    fs.writeFileSync(folder+'/browser-check.json', JSON.stringify({llmOnly: true, comparisonRemoved: true, matchingBadges: true, retentionHours: config.retention_hours, dynamicRetentionVerified: true, mobileOverflow: false, errors}, null, 2));
+    console.log('LLM-only workspace and developer-guide browser checks passed.');
+  } finally { await browser.close(); }
+})().catch(error => { console.error(error.message); process.exit(1); });

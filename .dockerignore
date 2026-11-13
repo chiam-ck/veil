@@ -1,0 +1,17 @@
+# Build context is an allowlist; local data can never reach the builder.
+**
+!Dockerfile
+!.dockerignore
+!pyproject.toml
+!requirements.in
+!requirements.lock
+!requirements-build.lock
+!README.md
+!LICENSE
+!THIRD_PARTY.md
+!licenses/
+!licenses/**
+!veil/
+!veil/**
+veil/**/__pycache__
+veil/**/*.pyc

@@ -1,0 +1,6 @@
+# Private trusted-team pilot. This adds a specific private interface binding to
+# the base file's loopback binding. No host firewall or other services are changed.
+services:
+  veil-api:
+    ports:
+      - "${VEIL_PILOT_ADDRESS:?Set VEIL_PILOT_ADDRESS to the approved private interface}:8787:8787"

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools==84.2.1", "wheel==0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "veil-cli"
+version = "1.0.0"
+description = "Private document redaction with configurable LLM detection"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "AGPL-3.0-only"
+license-files = ["LICENSE", "licenses/*"]
+dynamic = ["dependencies"]
+
+[project.urls]
+Source = "https://github.com/chiam-ck/veil"
+Issues = "https://github.com/chiam-ck/veil/issues"
+Security = "https://github.com/chiam-ck/veil/security/policy"
+
+[project.scripts]
+veil = "veil.cli:main"
+veil-api = "veil.api:main"
+veil-worker = "veil.worker:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.in"]}
+
+[tool.setuptools.package-data]
+veil = ["static/*", "static/assets/*", "model-lock.json", "models/*.onnx"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["veil*"]

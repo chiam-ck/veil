@@ -1,0 +1,190 @@
+{
+  "models": [
+    {
+      "package": "rapidocr_onnxruntime",
+      "path": "config.yaml",
+      "bytes": 1221,
+      "sha256": "bf94a1da4cba828e67b1d61e27cee14d9e7da27c9f272e04048a17e41ae97332"
+    },
+    {
+      "package": "rapidocr_onnxruntime",
+      "path": "models/ch_PP-OCRv4_det_infer.onnx",
+      "bytes": 4745517,
+      "sha256": "d2a7720d45a54257208b1e13e36a8479894cb74155a5efe29462512d42f49da9"
+    },
+    {
+      "package": "rapidocr_onnxruntime",
+      "path": "models/ch_PP-OCRv4_rec_infer.onnx",
+      "bytes": 10857958,
+      "sha256": "48fc40f24f6d2a207a2b1091d3437eb3cc3eb6b676dc3ef9c37384005483683b"
+    },
+    {
+      "package": "rapidocr_onnxruntime",
+      "path": "models/ch_ppocr_mobile_v2.0_cls_infer.onnx",
+      "bytes": 585532,
+      "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    },
+    {
+      "package": "opencc",
+      "path": "NOTICE.txt",
+      "bytes": 149,
+      "sha256": "afcbc6ee2d4fa9c2e9d5944b53ca05d3cc06bab6d082817c689bdfa33c38fcb0"
+    },
+    {
+      "package": "opencc",
+      "path": "README.md",
+      "bytes": 3446,
+      "sha256": "c7343f42523285b12b2b4cc55ed3a0c5389c52ddc176f43b7b0e58534eb04a5e"
+    },
+    {
+      "package": "opencc",
+      "path": "config/hk2s.json",
+      "bytes": 666,
+      "sha256": "11d1001e56bf26f73a9bd4e88e63e064bbab421054701f22d948bb4d72e0a6cb"
+    },
+    {
+      "package": "opencc",
+      "path": "config/s2hk.json",
+      "bytes": 526,
+      "sha256": "423ae690c62e0829044ce76cd5736667ff196562b06b1beedd60d1446bfd0ec9"
+    },
+    {
+      "package": "opencc",
+      "path": "config/s2t.json",
+      "bytes": 422,
+      "sha256": "246f559aaf3756b280157f4eb2ab1dd22f31ebac2a9e0aafa2b4a99c1cb676ce"
+    },
+    {
+      "package": "opencc",
+      "path": "config/s2tw.json",
+      "bytes": 524,
+      "sha256": "5eaf3d5138ad09ca34aae6b424c9928aaf870fcadd8495e4f8bd4172f57c3017"
+    },
+    {
+      "package": "opencc",
+      "path": "config/s2twp.json",
+      "bytes": 621,
+      "sha256": "e2eeb094abf6ef8f1b75971110ab9b37471d19eb4d79b7cbe2dc7ce8eb46def1"
+    },
+    {
+      "package": "opencc",
+      "path": "config/t2hk.json",
+      "bytes": 316,
+      "sha256": "2362f65edb9eb6627762e959ebb22e7c91a7260435e3135ecb7a21844ee913f8"
+    },
+    {
+      "package": "opencc",
+      "path": "config/t2s.json",
+      "bytes": 422,
+      "sha256": "3848b420a86a7c5f79a796321029db6f9aaa534bc3a7a67b90fc66744d3030d0"
+    },
+    {
+      "package": "opencc",
+      "path": "config/t2tw.json",
+      "bytes": 314,
+      "sha256": "0cb4078cd55c50892c8beeae79be73bbd4dc7c256b13c12f0aa6fe79f3436624"
+    },
+    {
+      "package": "opencc",
+      "path": "config/tw2s.json",
+      "bytes": 664,
+      "sha256": "efefc6b3031f370558cb9f3a75c7940927d6849aa92512cd2896dffa4e1b9ce2"
+    },
+    {
+      "package": "opencc",
+      "path": "config/tw2sp.json",
+      "bytes": 751,
+      "sha256": "ab8645dc184af734199701f09f515e68b5ef4f7f4fea20db79354c6fe6db33f2"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/HKVariants.txt",
+      "bytes": 532,
+      "sha256": "c3c93c35885902ba2b12a3235a7761b00fb2b027f36aa8314db2f6b6ad51d374"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/HKVariantsPhrases.txt",
+      "bytes": 279,
+      "sha256": "d790e9bcafd2610efc3c44db7d859d6882d2864ac43792fd13fd2825cb341192"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/HKVariantsRev.txt",
+      "bytes": 630,
+      "sha256": "2b4fdb5865703f1cf75d6e524e0b0d33733e9bb6f92df697cf1ad8fe27989619"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/HKVariantsRevPhrases.txt",
+      "bytes": 2709,
+      "sha256": "c2da309afa7fdd9061f204664039d33b000a4dca0ecae4e7480dcbf9e20f658e"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/JPVariants.txt",
+      "bytes": 2940,
+      "sha256": "7e998db5d6f437a605c901c9413ccd7505f8b2e1cd3f9e2dd84572d0af1d3fc0"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/STCharacters.txt",
+      "bytes": 34353,
+      "sha256": "9207708da9f2e2a248f39c457b2fccad26ec42e7efaf47a860e6900464f4cac5"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/STPhrases.txt",
+      "bytes": 1004153,
+      "sha256": "a4de4d2471f73cdb7e5b1b22920139aa4e4bbb1ebeea8f1fc341f988aa75c586"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TSCharacters.txt",
+      "bytes": 34627,
+      "sha256": "6b5a0a799bea2bb22c001f635eaa3fc2904310f0c08addbff275477a80ecf09a"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TSPhrases.txt",
+      "bytes": 5161,
+      "sha256": "b2ef895dd4953b4bb77fc8ef8d26a2a9ca6d43a760ed9a1d767672cfafa6324f"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TWPhrases.txt",
+      "bytes": 10812,
+      "sha256": "2ac64976553b8dd1f8d308b699540716099c04238d175ff336f53ababed26f07"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TWPhrasesRev.txt",
+      "bytes": 10854,
+      "sha256": "85059c3722d6098a44db23d78ef583fb10e34002c5ea717ab738d3b170d48d14"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TWVariants.txt",
+      "bytes": 312,
+      "sha256": "30e6f8395edbfdd74e293fd8b9c62105d787c849fbb208d2a7832eac696734d7"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TWVariantsRev.txt",
+      "bytes": 351,
+      "sha256": "1ea2b90f85eea6a2c9440716beee3268c740408caa334aa890bb4a35833f1b72"
+    },
+    {
+      "package": "opencc",
+      "path": "dictionary/TWVariantsRevPhrases.txt",
+      "bytes": 1075,
+      "sha256": "bef60ceb4e57b6b062351406cb5d4644875574231d64787e03711317b7e773f3"
+    },
+    {
+      "package": "veil",
+      "path": "models/ch_PP-OCRv5_rec_mobile.onnx",
+      "bytes": 16631306,
+      "sha256": "5825fc7ebf84ae7a412be049820b4d86d77620f204a041697b0494669b1742c5"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+name: veil
+x-runtime: &runtime
+  image: veil:1.0.0
+  user: "${VEIL_UID:-1000}:${VEIL_GID:-1000}"
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 128
+  mem_limit: 4g
+  cpus: 4
+  restart: unless-stopped
+  tmpfs:
+    - /tmp:size=256m,mode=1777
+  volumes:
+    - ./.veil:/data
+  environment:
+    VEIL_DATA: /data
+    VEIL_WORKERS: ${VEIL_WORKERS:-1}
+    VEIL_MAX_BYTES: ${VEIL_MAX_BYTES:-31457280}
+    VEIL_MAX_PAGES: ${VEIL_MAX_PAGES:-60}
+    VEIL_MAX_QUEUE: ${VEIL_MAX_QUEUE:-32}
+    VEIL_WORKSPACE_CREATIONS_PER_HOUR: ${VEIL_WORKSPACE_CREATIONS_PER_HOUR:-60}
+    VEIL_MAX_WORKSPACES: ${VEIL_MAX_WORKSPACES:-10000}
+    VEIL_TIMEOUT: ${VEIL_TIMEOUT:-600}
+    VEIL_RETENTION_HOURS: ${VEIL_RETENTION_HOURS:-24}
+    VEIL_ALLOWED_HOSTS: ${VEIL_ALLOWED_HOSTS:-127.0.0.1,localhost,veil-api}
+    VEIL_MAX_BUNDLE_BYTES: ${VEIL_MAX_BUNDLE_BYTES:-2147483648}
+    VEIL_DETECTOR: llm
+    VEIL_LLM_ENDPOINT: ${VEIL_LLM_ENDPOINT:-https://api.example.com/v1}
+    VEIL_LLM_MODEL: ${VEIL_LLM_MODEL:-${LLM_MODEL:-your-model-id}}
+    VEIL_LLM_API_KEY: ${VEIL_LLM_API_KEY:-${LLM_API_KEY:-}}
+    VEIL_LLM_ALLOW_NETWORK: ${VEIL_LLM_ALLOW_NETWORK:-false}
+    VEIL_LLM_TIMEOUT: ${VEIL_LLM_TIMEOUT:-60}
+    VEIL_LLM_MAX_CALLS: ${VEIL_LLM_MAX_CALLS:-300}
+    VEIL_LLM_CONCURRENCY: ${VEIL_LLM_CONCURRENCY:-1}
+    VEIL_LLM_INPUT_TOKEN_BUDGET: ${VEIL_LLM_INPUT_TOKEN_BUDGET:-4096}
+    VEIL_LLM_MAX_OUTPUT_TOKENS: ${VEIL_LLM_MAX_OUTPUT_TOKENS:-8192}
+    VEIL_PROVIDER_CHECK_TTL: ${VEIL_PROVIDER_CHECK_TTL:-300}
+    VEIL_PROVIDER_RETRY_SECONDS: ${VEIL_PROVIDER_RETRY_SECONDS:-5}
+    VEIL_PROVIDER_WAIT_TIMEOUT: ${VEIL_PROVIDER_WAIT_TIMEOUT:-900}
+    OMP_NUM_THREADS: 2
+    OPENBLAS_NUM_THREADS: 2
+services:
+  veil-api:
+    <<: *runtime
+    build: .
+    tmpfs:
+      - /tmp:size=1g,mode=1777
+    command: [uvicorn, veil.api:app, --host, 0.0.0.0, --port, "8787", --no-access-log, --limit-concurrency, "16", --no-proxy-headers, --ssl-certfile, /data/tls/server.crt, --ssl-keyfile, /data/tls/server.key]
+    ports: ["127.0.0.1:8787:8787"]
+    networks: [local]
+    healthcheck:
+      test: [CMD, python, -c, "import ssl, urllib.request; urllib.request.urlopen('https://127.0.0.1:8787/api/health',context=ssl.create_default_context(cafile='/data/tls/ca.crt'))"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+  veil-worker:
+    <<: *runtime
+    command: [veil-worker]
+    networks: [local]
+    depends_on:
+      veil-api:
+        condition: service_healthy
+networks:
+  local:
+    driver: bridge
