@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 25
     env:
       PIP_DISABLE_PIP_VERSION_CHECK: '1'
-      XDG_CACHE_HOME: ${{ runner.temp }}/veil-cache
+      XDG_CACHE_HOME: /tmp/veil-ci-cache
       VEIL_LLM_ALLOW_NETWORK: 'false'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
