@@ -117,3 +117,8 @@ node_modules/
 *.bmp
 *.gif
 !/veil/static/assets/*.png
+
+# Reviewed public documentation images only.
+!/docs/screenshots/batch-workspace.png
+!/docs/screenshots/completed-results.png
+!/docs/screenshots/manual-redaction.png
